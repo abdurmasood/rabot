@@ -1,10 +1,9 @@
 <div align="center">
 
-```
-╦═╗ ╔═╗ ╔╗  ╔═╗ ╔╦╗
-╠╦╝ ╠═╣ ╠╩╗ ║ ║  ║
-╩╚═ ╩ ╩ ╚═╝ ╚═╝  ╩
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/rabot-dark.svg">
+  <img alt="RABOT" src="assets/rabot-light.svg" width="540">
+</picture>
 
 *Virtual clone that knows everything about Rafey*
 
