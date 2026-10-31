@@ -133,7 +133,7 @@ jobs:
             
             ### 📦 Installation
             ```bash
-            npm install -g rafey-shell@${{ steps.version.outputs.NEW_VERSION }}
+            npm install -g rabot@${{ steps.version.outputs.NEW_VERSION }}
             ```
 
   # Publish from the release workflow, or from a tag push
@@ -200,7 +200,7 @@ jobs:
 
       - name: Update package.json for GitHub Packages
         run: |
-          sed -i 's/"name": "rafey-shell"/"name": "@abdurmasood\/rafey-shell"/' package.json
+          sed -i 's/"name": "rabot"/"name": "@abdurmasood\/rabot"/' package.json
 
       - name: Publish to GitHub Packages
         run: npm publish
