@@ -8,7 +8,7 @@
 
 *Everything you need to know about Rafey*
 
-[![npm version](https://img.shields.io/npm/v/rabot?style=flat-square&color=cb3837)](https://www.npmjs.com/package/rabot)
+[![npm version](https://img.shields.io/npm/v/@arafeymasood/rabot?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@arafeymasood/rabot)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen?style=flat-square)](https://nodejs.org)
 
 </div>
@@ -17,7 +17,7 @@
 
 ```bash
 # Install globally
-npm install -g rabot
+npm install -g @arafeymasood/rabot
 
 # Start chatting
 rabot
