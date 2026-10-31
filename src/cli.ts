@@ -10,7 +10,7 @@ import chalk from 'chalk';
 const program = new Command();
 
 program
-  .name('rafey-shell')
+  .name('rabot')
   .description('AI-powered shell with personalized LLM assistance')
   .version('1.0.0');
 

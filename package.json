@@ -1,10 +1,10 @@
 {
-  "name": "rafey-shell",
+  "name": "rabot",
   "version": "2.0.2",
   "description": "An AI-powered shell with personalized LLM assistance",
   "main": "dist/cli.js",
   "bin": {
-    "rafey-shell": "dist/cli.js",
+    "rabot": "dist/cli.js",
     "rs": "dist/cli.js"
   },
   "scripts": {
@@ -47,14 +47,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abdurmasood/rafey-shell.git"
+    "url": "git+https://github.com/abdurmasood/rabot.git"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
   "bugs": {
-    "url": "https://github.com/abdurmasood/rafey-shell/issues"
+    "url": "https://github.com/abdurmasood/rabot/issues"
   },
-  "homepage": "https://github.com/abdurmasood/rafey-shell#readme"
+  "homepage": "https://github.com/abdurmasood/rabot#readme"
 }
