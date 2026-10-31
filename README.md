@@ -12,7 +12,7 @@
 
 </div>
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Install globally
@@ -22,7 +22,7 @@ npm install -g @arafeymasood/rabot
 rabot
 ```
 
-## 💬 Usage
+## Usage
 
 | Command | Description |
 |---------|-------------|
