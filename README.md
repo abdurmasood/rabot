@@ -1,12 +1,12 @@
 <div align="center">
 
 ```
-╦═╗┌─┐┌─┐┌─┐┬ ┬ ╔═╗┬ ┬┌─┐┬  ┬  
-╠╦╝├─┤├┤ ├┤ └┬┘ ╚═╗├─┤├┤ │  │  
-╩╚═┴ ┴└  └─┘ ┴  ╚═╝┴ ┴└─┘┴─┘┴─┘
+╦═╗ ╔═╗ ╔╗  ╔═╗ ╔╦╗
+╠╦╝ ╠═╣ ╠╩╗ ║ ║  ║
+╩╚═ ╩ ╩ ╚═╝ ╚═╝  ╩
 ```
 
-*Everything you need to know about Rafey*
+*Virtual clone that knows everything about Rafey*
 
 [![npm version](https://img.shields.io/npm/v/@arafeymasood/rabot?style=flat-square&color=cb3837)](https://www.npmjs.com/package/@arafeymasood/rabot)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen?style=flat-square)](https://nodejs.org)
