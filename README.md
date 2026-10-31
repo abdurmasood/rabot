@@ -16,10 +16,7 @@
 
 ```bash
 # Install globally
-npm install -g @arafeymasood/rabot
-
-# Start chatting
-rabot
+npx -y @arafeymasood/rabot
 ```
 
 ## Usage
