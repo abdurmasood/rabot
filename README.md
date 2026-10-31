@@ -15,7 +15,6 @@
 ## Quick Start
 
 ```bash
-# Install globally
 npx -y @arafeymasood/rabot
 ```
 
