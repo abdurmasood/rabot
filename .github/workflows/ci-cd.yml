@@ -67,6 +67,47 @@ jobs:
           key: build-${{ github.sha }}
 
   # Create Release (manual trigger only)
+  # TEMPORARY, do not merge: shows why npm rejects the trusted-publishing
+  # token exchange. It publishes nothing and prints no token.
+  oidc-probe:
+    name: OIDC probe (temporary)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js for npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Use an npm release that supports trusted publishing
+        run: npm install -g npm@11
+
+      - name: Show the identity GitHub presents and npm's answer to it
+        run: |
+          ID_TOKEN=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=npm:registry.npmjs.org" | jq -r .value)
+          echo "::add-mask::$ID_TOKEN"
+          echo "--- claims"
+          node -e 'const p=JSON.parse(Buffer.from(process.argv[1].split(".")[1],"base64url").toString());const k=["iss","sub","aud","repository","repository_id","repository_owner","repository_owner_id","workflow_ref","job_workflow_ref","ref","event_name","environment","repository_visibility","runner_environment"];console.log(JSON.stringify(Object.fromEntries(k.map((x)=>[x,p[x]])),null,2))' "$ID_TOKEN"
+          # The new name, the old name (its publisher was set up before the
+          # repo was renamed) and a name that does not exist, to compare answers.
+          for PKG in '@arafeymasood%2frabot' 'rafey-shell' '@arafeymasood%2fno-such-package-probe'; do
+            echo "--- exchange for $PKG"
+            STATUS=$(curl -sS -o "$RUNNER_TEMP/exchange.json" -w '%{http_code}' -X POST -H "Authorization: Bearer $ID_TOKEN" "https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/$PKG")
+            echo "HTTP $STATUS"
+            jq -c 'if type == "object" and has("token") then (.token = "<received, not shown>") else . end' "$RUNNER_TEMP/exchange.json" || head -c 400 "$RUNNER_TEMP/exchange.json"
+            rm -f "$RUNNER_TEMP/exchange.json"
+          done
+
+      - name: Dry-run publish with verbose logging
+        run: npm publish --access public --dry-run --ignore-scripts --loglevel verbose 2>&1 | grep -i -E "oidc|provenance|npm (error|warn)|Publishing to" || true
+
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
