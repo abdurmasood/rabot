@@ -11,6 +11,7 @@
     "build": "tsc",
     "dev": "ts-node src/cli.ts",
     "start": "node dist/cli.js",
+    "test": "ts-node src/shell/wordmark.test.ts",
     "prepare": "npm run build"
   },
   "keywords": [
