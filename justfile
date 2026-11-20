@@ -10,10 +10,11 @@ install:
 dev:
     pnpm dev
 
-# Typecheck, then build
+# Typecheck, build, then test
 check:
     pnpm tsc --noEmit
     pnpm build
+    pnpm test
 
 # Build, then run the CLI
 start:
