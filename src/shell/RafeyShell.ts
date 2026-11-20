@@ -4,8 +4,12 @@ import * as readline from 'readline';
 import chalk from 'chalk';
 import ora from 'ora';
 import { LLMService } from '../services/LLMService';
+import { renderWordmark, WORDMARK_WIDTH } from './wordmark';
 
 const MUTED = '#8e8e93';
+const ACCENT = '#e24b3b';
+// Keeps the last wordmark cell off the wrap margin of the terminal.
+const WORDMARK_MARGIN = 2;
 
 interface ConversationEntry {
   timestamp: Date;
@@ -15,6 +19,10 @@ interface ConversationEntry {
 
 function muted(text: string): string {
   return chalk.hex(MUTED)(text);
+}
+
+function accent(text: string): string {
+  return chalk.hex(ACCENT)(text);
 }
 
 function readVersion(): string {
@@ -30,6 +38,33 @@ function readVersion(): string {
 function answerWidth(): number {
   const columns = process.stdout.columns || 80;
   return Math.max(24, Math.min(68, columns - 2));
+}
+
+function wordmarkFits(): boolean {
+  // columns is undefined when stdout is not a terminal, so pipes and files
+  // get the one-line banner.
+  return (process.stdout.columns || 0) >= WORDMARK_WIDTH + WORDMARK_MARGIN;
+}
+
+function wordmarkRows(): string[] {
+  // Without colour the offset layer would read as part of the letters.
+  if (chalk.level === 0) return renderWordmark(null);
+  return renderWordmark({
+    foreground: accent,
+    background: (text) => chalk.bgHex(ACCENT)(text),
+  });
+}
+
+function thinkingSpinner(): ora.Ora {
+  // ora only takes named colours, so its own colouring is off and the frames
+  // it resolved are painted instead. Passing our own frames would skip its
+  // ASCII fallback for consoles without Unicode.
+  const spinner = ora({ text: muted('thinking'), color: undefined, spinner: 'dots' });
+  const resolved = spinner.spinner;
+  if (typeof resolved === 'object') {
+    spinner.spinner = { interval: resolved.interval, frames: resolved.frames.map(accent) };
+  }
+  return spinner;
 }
 
 function wrapLine(line: string, width: number): string {
@@ -81,20 +116,32 @@ export class RafeyShell {
     this.rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
-      prompt: muted('› '),
+      prompt: accent('› '),
     });
 
     this.setupEventHandlers();
   }
 
   async start(): Promise<void> {
-    this.printBanner();
+    if (wordmarkFits()) {
+      this.printWordmark();
+    } else {
+      this.printBanner();
+    }
     this.rl.prompt();
+  }
+
+  private printWordmark(): void {
+    const tagline = ['a virtual copy of Rafey', this.version].filter(Boolean).join('  ');
+    console.log(wordmarkRows().join('\n'));
+    console.log();
+    console.log(muted(tagline));
+    console.log();
   }
 
   private printBanner(): void {
     const version = this.version ? `  ${muted(this.version)}` : '';
-    console.log(`${chalk.bold('rafey')}${version}`);
+    console.log(`${chalk.bold('rabot')}${version}`);
     console.log();
   }
 
@@ -132,11 +179,7 @@ export class RafeyShell {
     stdin.pause();
     stdin.setRawMode?.(false);
 
-    const spinner = ora({
-      text: muted('thinking'),
-      color: 'gray',
-      spinner: 'dots',
-    }).start();
+    const spinner = thinkingSpinner().start();
 
     try {
       const response = await this.llmService.query(query, this.conversationHistory);
